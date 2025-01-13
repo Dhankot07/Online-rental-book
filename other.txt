@@ -1,0 +1,563 @@
+main cart code with all the php code
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100%">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h5 class="mb-3">
+                                    <a href="#" onclick="javascript:history.back();" class="text-body">
+                                        <i class="fa fa-caret-left"></i>
+                                        Continue shopping
+                                    </a>
+                                </h5>
+                                <hr>
+                                <?php
+                                    if (isset($_GET['error']))
+                                    {
+                                ?>
+                                <div class="alert">
+                                    <span class="closebtn"
+                                        onclick="this.parentElement.style.display='none';">&times;</span>
+                                    <p class="error"><?php echo $_GET['error']; ?></p>
+                                </div>
+
+                                <?php
+                                    }
+
+                                    $sql =mysqli_query($con,"SELECT * FROM book_cart bc JOIN book_list bl ON bc.book_id = bl.book_id WHERE bc.user_id ='$user_id'");
+                                    $count=mysqli_num_rows($sql);
+                                ?>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <p class="mb-1">Shopping cart</p>
+                                        <p class="mb-0">You have <?= $count ?>items in your cart</p>
+                                    </div>
+                                    <!--<div>
+                                        <p class="mb-0"><span class="text-muted">Sort by:</span> <a
+                                                href="#!" class="text-body">price <i
+                                                    class="fas fa-angle-down mt-1"></i></a></p>
+                                    </div>-->
+                                </div>
+                                <?php
+                                    if($sql->num_rows >0){
+                                        while($row=$sql->fetch_assoc()){
+                                ?>
+
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex flex-row align-items-center">
+                                                <div>
+                                                    <img src="admin/uploads/<?= $row['book_file'] ?>"
+                                                        class="img-fluid rounded-3" alt="Shopping item"
+                                                        style="width: 65px;">
+                                                </div>
+                                                <div class="ms-3">
+                                                    <h5>
+                                                        <?= $row['book_title'] ?>
+                                                    </h5>
+                                                    <p class="small mb-0"><?= $row['book_author'] ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-row align-items-center">
+                                                <div style="width: 80px;">
+                                                    <h5 class="mb-0 price">₹<?= $row['mrp'] ?></h5>
+                                                </div>
+                                                <a href="#!" style="color: #cecece;"><i
+                                                        class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                        }
+                                    }
+                                    else{
+                                        
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+nav .
+logo .
+box .
+cart .
+cart-activ .
+cart-title .
+        cart-content
+cart-box .
+cart-img .
+cart-food-title .
+cart-price .
+        cart-amt
+detail-box .
+price-box .
+cart-quantity .
+cart-remove .
+cart-count .
+total .
+total-title .
+total-price .
+btn-buy .
+
+
+
+
+
+
+<script>
+    function updateCartTotal() {
+        var cartItemContainer = document.getElementsByClassName('cart-items')[0];
+        var cartRows = cartItemContainer.getElementsByClassName('cart-row');
+        var total = 0;
+        for (var i = 0; i < cartRows.length; i++) {
+            var cartRow = cartRows[i];
+            var priceElement = cartRow.getElementsByClassName('cart-price')[0];
+            var price = parseFloat(priceElement.innerText.replace('Rs ', ''))
+            total = total + price;
+
+        }
+        total = Math.round(total * 100) / 100;
+        document.getElementsByClassName('cart-total-price')[0].innerText = 'Rs ' + total + '.00';
+
+    }
+    </script>
+
+
+
+
+
+
+
+    <!--<div class="col-sm-8">
+        <label class="control-label">Quantity</label>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input type="number" name="name" id="name">
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>-->
+
+
+
+
+<span class="image">
+    <img src="admin/uploads/<?= $row['book_file'] ?>" alt="" />
+</span>
+<a href="product-details.php?id=<?php echo $row['book_id']; ?>">
+    <h2><?php echo $row['book_title']; ?></h2>
+    <p><?php echo $row['book_author']; ?> </p>
+    <p><?php echo $row['book_lang']; ?>||
+        <?php echo $row['publication']; ?>
+    </p>
+    <!-- <del>$19.00</del> -->
+    <p> <strong>₹ <?php echo $row['mrp']; ?></strong>
+    </p>
+</a>
+
+
+
+
+
+
+
+
+<!--
+    cart.php
+    - Card payment design
+
+<div class="col-lg-5">
+    <div class="card bg-primary text-white rounded-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0">Card details</h5>
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                    class="img-fluid rounded-3" style="width: 45px;"
+                    alt="Avatar">
+            </div>
+
+            <p class="small mb-2">Card type</p>
+            <a href="#!" type="submit" class="text-white"><i
+                    class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+            <a href="#!" type="submit" class="text-white"><i
+                    class="fab fa-cc-visa fa-2x me-2"></i></a>
+            <a href="#!" type="submit" class="text-white"><i
+                    class="fab fa-cc-amex fa-2x me-2"></i></a>
+            <a href="#!" type="submit" class="text-white"><i
+                    class="fab fa-cc-paypal fa-2x"></i></a>
+
+            <form class="mt-4">
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                    <input type="text" id="typeName"
+                        class="form-control form-control-lg" siez="17"
+                        placeholder="Cardholder's Name" />
+                    <label class="form-label" for="typeName">Cardholder's
+                        Name</label>
+                </div>
+
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                    <input type="text" id="typeText"
+                        class="form-control form-control-lg" siez="17"
+                        placeholder="1234 5678 9012 3457" minlength="19"
+                        maxlength="19" />
+                    <label class="form-label" for="typeText">Card Number</label>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div data-mdb-input-init
+                            class="form-outline form-white">
+                            <input type="text" id="typeExp"
+                                class="form-control form-control-lg"
+                                placeholder="MM/YYYY" size="7" id="exp"
+                                minlength="7" maxlength="7" />
+                            <label class="form-label"
+                                for="typeExp">Expiration</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div data-mdb-input-init
+                            class="form-outline form-white">
+                            <input type="password" id="typeText"
+                                class="form-control form-control-lg"
+                                placeholder="&#9679;&#9679;&#9679;" size="1"
+                                minlength="3" maxlength="3" />
+                            <label class="form-label" for="typeText">Cvv</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Subtotal</p>
+                <p class="mb-2">$4798.00</p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <p class="mb-2">Shipping</p>
+                <p class="mb-2">$20.00</p>
+            </div>
+
+            <div class="d-flex justify-content-between mb-4">
+                <p class="mb-2">Total(Incl. taxes)</p>
+                <p class="mb-2">$4818.00</p>
+            </div>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                class="btn btn-info btn-block btn-lg">
+                <div class="d-flex justify-content-between">
+                    <span>$4818.00</span>
+                    <span>Checkout <i
+                            class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                </div>
+            </button>
+
+        </div>
+    </div>
+</div>-->
+
+
+
+
+$query = mysqli_query($con,"SELECT * FROM book_cart WHERE user_id='$user_id'");
+$order_id = mysqli_insert_id($con);
+foreach($query as $bitem){
+    $query = mysqli_query($con,"INSERT INTO order_item(order_id, cart_id, b_amount) VALUES
+    ('$order_id','$cart_id','$book_amt')");
+}
+
+$sql = mysqli_query($con,"SELECT * FROM book_order WHERE user_id='$user_id' AND  AND is_deleted='0'");
+    if(mysqli_num_rows($sql)==0){
+        $row=mysqli_fetch_assoc($sql);
+        $date_str = strtotime("today");
+        $access_start = date('y-m-d',$date_str);
+        
+        $date_end = strtotime("+15 days");
+        $access_end = date('y-m-d',$date_end);
+        $book_id=$row['book_id'];
+        
+        $insert = mysqli_query($con,"INSERT INTO book_order(user_id, b_id, payment_amount,starting_date,ending_date) VALUES('$user_id','$book_id','$amount','$access_start','$access_end')");
+        if($insert){
+            $temp=mysqli_query($con,"SELECT * FROM book_order where user_id='$user_id' AND is_deleted='0'");
+            $rows=mysqli_fetch_assoc($temp);
+            $order_id=$rows['order_id'];
+
+            $sel=mysqli_query($con,"SELECT * FROM book_cart bc JOIN book_list bl ON bc.book_id = bl.book_id WHERE bc.user_id ='$user_id' AND bc.is_deleted = '0' ");
+            while($row=mysqli_fetch_assoc($sel)){
+            $cart_id=$row['cart_id'];
+            $book_amt=$row['mrp'];
+            $book_id = $row['book_id'];
+            $order_item_insert = mysqli_query($con,"INSERT INTO order_item (order_id,cart_id,b_id,b_amount)VALUES('$order_id','$cart_id','$book_id','$book_amt')");
+            if($order_item_insert){
+            $update_query = mysqli_query($con,"UPDATE book_cart SET is_deleted= '1'");
+        }
+    }
+    header("Location: my_ebook.php");
+    }
+    else{
+        echo "Data is alredy inserted in ";
+    }
+    }
+    else{
+    echo "Data is already inserted in book_order";
+    }
+
+
+    //Check date
+    $eg=mysqli_query($con,"SELECT * FROM book_order bo  WHERE user_id='$user_id' AND ending_date='$current_date'");
+    if(mysqli_num_rows($eg)!=0){
+        echo"true";
+    }
+    else{
+        echo "false";
+        echo $current_date;
+    };*/
+                                                
+
+
+
+
+
+
+
+
+.custom-checkbox .custom-control-label::before {
+    border-radius: 0.25rem;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox .custom-control-input:indeterminate~.custom-control-label::before {
+    border-color: #007bff;
+    background-color: #007bff;
+}
+
+.custom-checkbox .custom-control-input:indeterminate~.custom-control-label::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3e%3cpath stroke='%23fff' d='M0 2h4'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
+    background-color: rgba(0, 123, 255, 0.5);
+}
+
+.custom-checkbox .custom-control-input:disabled:indeterminate~.custom-control-label::before {
+    background-color: rgba(0, 123, 255, 0.5);
+}
+
+
+
+
+
+
+<div class="col-md-6">
+    <div class="col-md-6 control-label">
+        <label class="form-check-label">
+            <input type="hidden" name="checkbox" value="0">
+            <input class="form-check-input" name="checkbox"
+                type="checkbox" value="1">
+            <span class="form-check-sign">Most Popular</span>
+        </label>
+    </div>
+</div>
+
+
+
+
+<div class="input-group">
+    <input type="text" placeholder="Search ..." class="form-control">
+    <div class="input-group-append">
+        <span class="input-group-text">
+            <i class="la la-search search-icon"></i>
+        </span>
+    </div>
+    </div>
+
+
+    if(empty($_SESSION)){
+        header('location:login.php');
+    }else
+
+
+
+give alert message ,error
+    echo"<script> alert('Login Successfully. '); </script>";
+
+
+
+upload image
+
+    $file_count = count($_FILES['book_img']['name']);
+    $file=$_FILES['book_img']['name'];
+    print_r($file);
+
+    for($i=0;$i<$file_count;$i++){
+        $filename = $_FILES['book_image']['name'][$i];
+        print_r($filename);
+        exit;
+    }
+
+    if($insert == TRUE){
+    $select_bl=mysqli_query($con,"SELECT * FROM book_list WHERE book_title = '".$b_title."'");
+    $fetch_id=mysqli_fetch_assoc($select_bl);
+    $book_id = $fetch_id['book_id'];
+    for($i=0;$i<$file_count;$i++){
+        $filename = $_FILES['book_image']['name'][$i];
+        echo $filename;
+        exit;
+        $insert_img = mysqli_query($con,"INSERT INTO book_image(book_id,image) VALUES ('$book_id','$filename')");
+        if($insert_img == TRUE){
+            echo "yes";
+        }
+        else{
+            echo "no";
+        }
+    }
+}
+exit;
+
+
+Update image code
+
+    <div class="col-md-6">
+    <label class="col-md-4 control-label">Upload Book File
+        <span style="color: red;">
+            (.jpg File Only)
+        </span>
+    </label>
+    <div class="col-md-12 inputGroupContainer">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-pencil"></i>
+            </span>
+            <input type="file" name="book_img" required>
+            <label><?php echo htmlspecialchars($row['book_file']); ?></label>
+        </div>
+    </div>
+    </div>
+
+    $b_file = $_FILES['book_img']['name'];
+        $b_file_tmp = $_FILES["book_img"]["tmp_name"];
+        $upload_dir = "uploads/";
+        $upload_file = $upload_dir .basename($b_file);
+        $uploadOk = 1;
+        $file = strtolower(pathinfo($upload_file,PATHINFO_EXTENSION));
+        $check = getimagesize($b_file_tmp);
+        
+        if($check !== false) {
+            
+            // echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        }
+        else {
+            // echo "File is not an image.";
+            $uploadOk = 0;
+        }
+        
+        
+        if ($uploadOk == 0) {
+            echo "<script> alert('Sorry, your file was not uploaded.');</script>";
+            // if everything is ok, try to upload file
+        }
+        else {
+            if(move_uploaded_file($b_file_tmp, $upload_file)) {
+                echo "<script> alert('The file ". htmlspecialchars( basename( $b_file)). " has been uploaded.');</script>";
+            } else {
+                echo "<script> alert('Sorry, there was an error uploading your file.');</script>".$uploadOk .$con->error;
+            }
+        }
+
+demo path
+http://localhost/online-rental-book/product-details.php?id=5
+
+
+    <style>
+    body {
+        margin: 0;
+        font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: .8125rem;
+        font-weight: 400;
+        line-height: 1.5385;
+        color: #333;
+        text-align: left;
+        background-color: #2196F3;
+    }
+
+    .mt-50 {
+        margin-top: 50px;
+    }
+
+    .mb-50 {
+        margin-bottom: 50px;
+    }
+
+
+
+    .card {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, .125);
+        border-radius: .1875rem;
+    }
+
+    .card-img-actions {
+        position: relative;
+    }
+
+    .card-img-actions img {
+        height: 100%;
+        width: 800px;
+    }
+
+    .card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .card-img {
+        width: 50%;
+    }
+
+    .bg-cart {
+        background-color: orange;
+        color: #fff;
+    }
+
+    .bg-cart:hover {
+        color: #fff;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+    </style>
